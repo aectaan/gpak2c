@@ -24,6 +24,7 @@ fn main() {
 
     match ext {
         Some("csv") => extract_from_csv(args.input_path, args.output_path),
+        Some("hex") => extract_from_hex(args.input_path, args.output_path),
         Some(_) => println!("Unsupported file type!"),
         None => eprintln!("File has no extension!"),
     }
@@ -46,5 +47,31 @@ fn extract_from_csv(input_file: PathBuf, output_file: PathBuf) {
             writeln!(output_data, "0x{}, ", line).unwrap();
         }
     }
+    writeln!(output_data, "}};").unwrap();
+}
+
+fn extract_from_hex(input_file: PathBuf, output_file: PathBuf) {
+    let input_data = fs::read_to_string(input_file).unwrap();
+    let mut output_data = fs::File::create(&output_file).unwrap();
+    writeln!(
+        output_data,
+        "uint8_t {}[256] = {{",
+        output_file.file_stem().and_then(OsStr::to_str).unwrap()
+    )
+    .unwrap();
+
+    for line in input_data.lines() {
+        if line.len() == 43 {
+            for i in 9..=39 {
+                if i % 2 == 0 {
+                    continue;
+                } else {
+                    write!(output_data, "0x{}, ", &line[i..=(i + 1)]).unwrap();
+                }
+            }
+            writeln!(output_data).unwrap();
+        }
+    }
+
     writeln!(output_data, "}};").unwrap();
 }
