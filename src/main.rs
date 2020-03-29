@@ -7,7 +7,7 @@ use structopt::StructOpt;
 #[derive(Debug, StructOpt)]
 #[structopt(
     name = "gpak2c",
-    about = "GPAK output converter from *.hex, *.txt or *.csv into *.c files"
+    about = "GPAK output converter from *.hex or *.csv into *.c files"
 )]
 struct InputArgs {
     #[structopt(short = "i", long = "input")]
@@ -19,7 +19,6 @@ struct InputArgs {
 fn main() {
     let args = InputArgs::from_args();
     assert_ne!(args.input_path, args.output_path);
-
     let ext = args.input_path.extension().and_then(OsStr::to_str);
 
     match ext {
