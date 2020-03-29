@@ -1,7 +1,7 @@
 [package]
 name = "gpak2c"
 version = "0.1.0"
-authors = ["Egor Markov <emarkov@notanotherone.com>"]
+authors = ["Egor Markov <mark_ee@live.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
